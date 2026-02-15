@@ -8,11 +8,13 @@ Licensed under New BSD License as described in the file LICENSE.
 from __future__ import print_function, unicode_literals, absolute_import, division
 import simplemediawiki, simplejson
 import re
+import time
 from pprint import pprint
 
 class Importer(object):
     def __init__(self, api_url, http_user=None, http_pass="", wiki_user=None, wiki_pass="", wiki_domain=None, verbose=False):
         self.verbose = verbose
+        self.delay = delay
         if wiki_domain:
             self.mw = simplemediawiki.MediaWiki(api_url, http_user=http_user, http_password=http_pass, domain=wiki_domain)
         else:
@@ -101,6 +103,8 @@ class Importer(object):
         result = []
         continuations = 0
         while True:
+            if self.delay:
+                time.sleep(self.delay)
             try:
                 response = self.mw.call(query)
             except simplejson.scanner.JSONDecodeError as e:

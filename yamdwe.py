@@ -41,9 +41,9 @@ def main():
         print("WARNING: Mediawiki URL does not end in 'api.php'... This has to be the URL of the Mediawiki API, not just the wiki. If you can't export anything, try adding '/api.php' to the wiki URL.")
 
     if "domain" in inspect.getargspec(simplemediawiki.MediaWiki.__init__)[0]:
-        importer = mediawiki.Importer(args.mediawiki, args.http_user, args.http_pass, args.wiki_user, args.wiki_pass, args.wiki_domain, args.verbose)
+        importer = mediawiki.Importer(args.mediawiki, args.http_user, args.http_pass, args.wiki_user, args.wiki_pass, args.wiki_domain, args.verbose, args.query_delay)
     else:
-        importer = mediawiki.Importer(args.mediawiki, args.http_user, args.http_pass, args.wiki_user, args.wiki_pass, args.verbose)
+        importer = mediawiki.Importer(args.mediawiki, args.http_user, args.http_pass, args.wiki_user, args.wiki_pass, args.verbose, args.query_delay)
     exporter = dokuwiki.Exporter(args.dokuwiki)
 
     # Set the wikicontent's definition of File: and Image: prefixes (varies by language settings)
@@ -104,6 +104,7 @@ if "domain" in inspect.getargspec(simplemediawiki.MediaWiki.__init__)[0]:
 arguments.add_argument('-v', '--verbose',help="Print verbose progress and error messages", action="store_true")
 arguments.add_argument('--partial_pages', help="Read this file for the page data instead of getting all_pages from the mediawiki")
 arguments.add_argument('--partial_images', help="Read this file for the image data instead of getting all_images from the mediawiki")
+arguments.add_argument('--query_delay', default=0, type=float, help="Sleep this amount of seconds between queries to mediawiki")
 arguments.add_argument('mediawiki', metavar='MEDIAWIKI_API_URL', help="URL of mediawiki's api.php file (something like http://mysite/wiki/api.php)")
 arguments.add_argument('dokuwiki', metavar='DOKUWIKI_ROOT', help="Root path to an existing dokuwiki installation to add the Mediawiki pages to (can be a brand new install.)")
 
