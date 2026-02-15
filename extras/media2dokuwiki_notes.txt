@@ -1,0 +1,22 @@
+Notes:
+* Simplemediawiki: pip install not good (python2), should instead use 
+  https://github.com/iliana/python-simplemediawiki/blob/develop/simplemediawiki.py
+  (Included in this directory just in case; can be copied to venv_dir/lib/python_ver/site-packages/ )
+* Helpers:
+** When listing page titles to search for, need to use names with spaces rather than underscores
+** Going through all pages does not list pages if they are within a class.
+* Added query_delay parameter to give the mediawiki server a breather
+
+URLs: https://github.com/projectgus/yamdwe/
+https://github.com/iliana/python-simplemediawiki
+https://www.mediawiki.org/w/api.php?action=help&modules=query
+https://www.mediawiki.org/wiki/API:Continue#Example_3:_Python_code_for_iterating_through_all_results
+
+Pip installs:
+mwlib
+simplemediawiki
+requests
+six
+py
+pypdf
+pyparsing
