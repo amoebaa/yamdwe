@@ -5,20 +5,23 @@ wrapper to the MediaWiki API.
 Copyright (C) 2014 Angus Gratton
 Licensed under New BSD License as described in the file LICENSE.
 """
-from __future__ import print_function, unicode_literals, absolute_import, division
-import simplemediawiki, simplejson
+#from __future__ import print_function, unicode_literals, absolute_import, division
+#import simplemediawiki, simplejson
+import simplemediawiki
 import re
 import time
-from pprint import pprint
+#from pprint import pprint
 
 class Importer(object):
-    def __init__(self, api_url, http_user=None, http_pass="", wiki_user=None, wiki_pass="", wiki_domain=None, verbose=False):
+    #def __init__(self, api_url, http_user=None, http_pass="", wiki_user=None, wiki_pass="", wiki_domain=None, verbose=False, delay=0):
+    def __init__(self, api_url, http_user=None, http_pass="", wiki_user=None, wiki_pass="", verbose=False, delay=0):
         self.verbose = verbose
         self.delay = delay
-        if wiki_domain:
-            self.mw = simplemediawiki.MediaWiki(api_url, http_user=http_user, http_password=http_pass, domain=wiki_domain)
-        else:
-            self.mw = simplemediawiki.MediaWiki(api_url, http_user=http_user, http_password=http_pass)
+        #if wiki_domain:
+        #    self.mw = simplemediawiki.MediaWiki(api_url, http_user=http_user, http_password=http_pass, domain=wiki_domain)
+        #else:
+        #    self.mw = simplemediawiki.MediaWiki(api_url, http_user=http_user, http_password=http_pass)
+        self.mw = simplemediawiki.MediaWiki(api_url, http_user=http_user, http_password=http_pass)
         # login if necessary
         if wiki_user is not None:
             print("Logging in as %s..." % wiki_user)
@@ -70,7 +73,7 @@ class Importer(object):
         query = { 'prop' : 'revisions',
                   'pageids' : pageid,
                   'rvprop' : 'timestamp|user|comment|content',
-                  'rvlimit' : '5',
+                  'rvlimit' : '50',
                   }
         revisions = self._query(query, [ 'pages', str(pageid), 'revisions' ])
         return revisions
@@ -107,7 +110,7 @@ class Importer(object):
                 time.sleep(self.delay)
             try:
                 response = self.mw.call(query)
-            except simplejson.scanner.JSONDecodeError as e:
+            except json.scanner.JSONDecodeError as e:
                 if e.pos == 0:
                     if not self.verbose:
                       raise RuntimeError("Mediawiki gave us back a non-JSON response. You may need to double-check the Mediawiki API URL you are providing (it usually ends in api.php), and also your Mediawiki permissions. To see the response content, pass the --verbose flag to yamdwe.")

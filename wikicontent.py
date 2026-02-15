@@ -6,10 +6,11 @@ Uses mwlib to parse the Mediawiki markup.
 Copyright (C) 2014 Angus Gratton
 Licensed under New BSD License as described in the file LICENSE.
 """
-from __future__ import print_function, unicode_literals, absolute_import, division
+#from __future__ import print_function, unicode_literals, absolute_import, division
 import re, string, dokuwiki, visitor
 from mwlib.parser import *
-from mwlib import uparser
+from mwlib import parser, refine
+from mwlib.refine import uparser
 
 # Regex to match any known File: namespace (can be updated based on the mediawiki installation language)
 mw_file_namespace_aliases = re.compile("^(Image|File):", re.IGNORECASE)
@@ -61,7 +62,8 @@ def convert_pagecontent(title, content):
         return "<__yamdwe_nowiki>%d</__yamdwe_nowiki>" % (len(nowiki_plaintext)-1,)
     content = re.sub(r"<nowiki>.+?</nowiki>", add_nowiki_block, content)
 
-    root = uparser.parseString(title, content) # create parse tree
+    #root = uparser.parseString(title, content) # create parse tree
+    root = uparser.parse_string(title, content) # create parse tree
     context = {}
     context["list_stack"] = []
     context["nowiki_plaintext"] = nowiki_plaintext # hacky way of attaching to child nodes
@@ -78,9 +80,11 @@ def convert_children(node, context):
     result = ""
     for child in node.children:
         res = convert(child, context, result.endswith("\n"))
-        if type(res) is str:
-            res = unicode(res)
-        if type(res) is not unicode:
+        #if type(res) is str:
+        #    res = unicode(res)
+        #if type(res) is not unicode:
+        #    print("Got invalid response '%s' when processing '%s'" % (res,child))
+        if type(res) is not str:
             print("Got invalid response '%s' when processing '%s'" % (res,child))
         result += res
     return result
@@ -124,7 +128,7 @@ def convert(style, context, trailing_newline):
     formatter = {
         ";" :  ("**", r"**\\"),     # definition (essentially boldface)
         "''" : ("//", "//"),        # italics
-        "'''" :("**", "**"),        # boldface
+        "'''" :("**", "**"),        # boldface "'''"
         ":"   : ("", ""),           # other end of a definition???
         "sub" : ("<sub>","</sub>"),
         "sup" : ("<sup>","</sup>"),

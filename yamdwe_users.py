@@ -16,10 +16,10 @@ sudo apt-get install python-mysqldb
 Copyright (C) 2014 Angus Gratton
 Licensed under New BSD License as described in the file LICENSE.
 """
-from __future__ import print_function, unicode_literals, absolute_import, division
+#from __future__ import print_function, unicode_literals, absolute_import, division
 import argparse, sys, os.path, collections, getpass, re, codecs, MySQLdb
 import names
-from pprint import pprint
+#from pprint import pprint
 
 def main():
     args = arguments.parse_args()

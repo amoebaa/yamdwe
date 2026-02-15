@@ -150,8 +150,8 @@ class method_overload(object):
         argtype = type(args[0])
         class Old:
             pass
-        if argtype is types.InstanceType: # old-style class
-            argtype = args[0].__class__        
+        #if argtype is types.InstanceType: # old-style class
+        #    argtype = args[0].__class__
         hier = list(inspect.getmro(argtype)) # class hierarchy
         hier.reverse() # order w/ superclass first
         hier = [ t for t in hier if t in self.registry ]

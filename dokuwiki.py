@@ -6,7 +6,7 @@ Tested with Dokuwiki 2014-05-05 "Ponder Stibbons".
 Copyright (C) 2014 Angus Gratton
 Licensed under New BSD License as described in the file LICENSE.
 """
-from __future__ import print_function, unicode_literals, absolute_import, division
+#from __future__ import print_function, unicode_literals, absolute_import, division
 import os, os.path, gzip, shutil, re, requests, calendar, codecs, sys
 from requests.auth import HTTPBasicAuth
 import wikicontent
@@ -200,7 +200,7 @@ def make_dokuwiki_pagename(mediawiki_name):
       result = result.lstrip(':')
     # Fix any pages that began with a space, because that breaks dokuwiki
     result = result.replace(":_", ":")
-    result = codecs.encode(result, sys.getfilesystemencoding(), "replace")
+    #result = codecs.encode(result, sys.getfilesystemencoding(), "replace")
     return result
 
 def make_dokuwiki_heading_id(mw_heading_name):

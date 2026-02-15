@@ -11,9 +11,9 @@ Python 2.7, mwlib, simplemediawiki, requests
 Copyright (C) 2014 Angus Gratton
 Licensed under New BSD License as described in the file LICENSE.
 """
-from __future__ import print_function, unicode_literals, absolute_import, division
-import argparse, sys, codecs, locale, getpass, datetime
-from pprint import pprint
+#from __future__ import print_function, unicode_literals, absolute_import, division
+import argparse, sys, codecs, locale, getpass, datetime, json
+#from pprint import pprint
 import mediawiki, dokuwiki, wikicontent
 # only needed to check for domain functionality
 import simplemediawiki, inspect
@@ -23,7 +23,7 @@ def main():
     sys.setrecursionlimit(20000)
 
     # try not to crash if the output/console has a character we can't encode
-    sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout, "replace")
+    #sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout, "replace")
 
     args = arguments.parse_args()
 
@@ -40,10 +40,11 @@ def main():
     if not args.mediawiki.endswith("api.php"):
         print("WARNING: Mediawiki URL does not end in 'api.php'... This has to be the URL of the Mediawiki API, not just the wiki. If you can't export anything, try adding '/api.php' to the wiki URL.")
 
-    if "domain" in inspect.getargspec(simplemediawiki.MediaWiki.__init__)[0]:
-        importer = mediawiki.Importer(args.mediawiki, args.http_user, args.http_pass, args.wiki_user, args.wiki_pass, args.wiki_domain, args.verbose, args.query_delay)
-    else:
-        importer = mediawiki.Importer(args.mediawiki, args.http_user, args.http_pass, args.wiki_user, args.wiki_pass, args.verbose, args.query_delay)
+    #if "domain" in inspect.getargspec(simplemediawiki.MediaWiki.__init__)[0]:
+    #    importer = mediawiki.Importer(args.mediawiki, args.http_user, args.http_pass, args.wiki_user, args.wiki_pass, args.wiki_domain, args.verbose, args.query_delay)
+    #else:
+    #    importer = mediawiki.Importer(args.mediawiki, args.http_user, args.http_pass, args.wiki_user, args.wiki_pass, args.verbose, args.query_delay)
+    importer = mediawiki.Importer(args.mediawiki, args.http_user, args.http_pass, args.wiki_user, args.wiki_pass, args.verbose, args.query_delay)
     exporter = dokuwiki.Exporter(args.dokuwiki)
 
     # Set the wikicontent's definition of File: and Image: prefixes (varies by language settings)
@@ -99,8 +100,9 @@ arguments.add_argument('--http_user', help="Username for HTTP basic auth")
 arguments.add_argument('--http_pass', help="Password for HTTP basic auth (if --http_user is specified but not --http_pass, yamdwe will prompt for a password)")
 arguments.add_argument('--wiki_user', help="Mediawiki login username")
 arguments.add_argument('--wiki_pass', help="Mediawiki login password (if --wiki_user is specified but not --wiki_pass, yamdwe will prompt for a password)")
-if "domain" in inspect.getargspec(simplemediawiki.MediaWiki.__init__)[0]:
-    arguments.add_argument('--wiki_domain', help="Mediawiki login domain (needs a non-standard simplemediawiki library)")
+#if "domain" in inspect.getargspec(simplemediawiki.MediaWiki.__init__)[0]:
+#if "domain" in inspect.getfullargspec(simplemediawiki.MediaWiki.__init__)[0]:
+#    arguments.add_argument('--wiki_domain', help="Mediawiki login domain (needs a non-standard simplemediawiki library)")
 arguments.add_argument('-v', '--verbose',help="Print verbose progress and error messages", action="store_true")
 arguments.add_argument('--partial_pages', help="Read this file for the page data instead of getting all_pages from the mediawiki")
 arguments.add_argument('--partial_images', help="Read this file for the image data instead of getting all_images from the mediawiki")
