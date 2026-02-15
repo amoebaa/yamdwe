@@ -41,6 +41,9 @@ class Importer(object):
         if self.verbose:
             print(msg)
 
+    def get_partial_pages(self, partial_pages):
+        return self.get_page_revisions(partial_pages)
+
     def get_all_pages(self):
         """
         Slurp all pages down from the mediawiki instance, together with all revisions including content.
@@ -49,6 +52,9 @@ class Importer(object):
         query = {'list' : 'allpages'}
         print("Getting list of pages...")
         pages = self._query(query, [ 'allpages' ])
+        return self.get_page_revisions(pages)
+
+    def get_page_revisions(self, pages):
         self.verbose_print("Got %d pages." % len(pages))
         print("Query page revisions (this may take a while)...")
         for page in pages:

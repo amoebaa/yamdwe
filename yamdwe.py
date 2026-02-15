@@ -50,8 +50,13 @@ def main():
     canonical_file, aliases = importer.get_file_namespaces()
     wikicontent.set_file_namespaces(canonical_file, aliases)
 
-    # Read all pages and page revisions
-    pages = importer.get_all_pages()
+    # Read all (wanted) pages and page revisions
+    if args.partial_pages:
+        with open(args.partial_pages, mode='r', encoding="utf-8") as f:
+            partial_pages_info = json.load(f)
+            pages = importer.get_partial_pages(partial_pages_info)
+    else:
+        pages = importer.get_all_pages()
     print("Found %d pages to export..." % len(pages))
 
     # Add a shameless "exported by yamdwe" note to the front page of the wiki
@@ -71,7 +76,11 @@ def main():
     exporter.write_pages(pages)
 
     # Bring over images
-    images = importer.get_all_images()
+    if args.partial_images:
+        with open(args.partial_images, mode='r', encoding="utf-8") as f:
+            images = json.load(f)
+    else:
+        images = importer.get_all_images()
     print("Found %d images to export..." % len(images))
     exporter.write_images(images, canonical_file, args.http_user, args.http_pass)
 
@@ -93,6 +102,8 @@ arguments.add_argument('--wiki_pass', help="Mediawiki login password (if --wiki_
 if "domain" in inspect.getargspec(simplemediawiki.MediaWiki.__init__)[0]:
     arguments.add_argument('--wiki_domain', help="Mediawiki login domain (needs a non-standard simplemediawiki library)")
 arguments.add_argument('-v', '--verbose',help="Print verbose progress and error messages", action="store_true")
+arguments.add_argument('--partial_pages', help="Read this file for the page data instead of getting all_pages from the mediawiki")
+arguments.add_argument('--partial_images', help="Read this file for the image data instead of getting all_images from the mediawiki")
 arguments.add_argument('mediawiki', metavar='MEDIAWIKI_API_URL', help="URL of mediawiki's api.php file (something like http://mysite/wiki/api.php)")
 arguments.add_argument('dokuwiki', metavar='DOKUWIKI_ROOT', help="Root path to an existing dokuwiki installation to add the Mediawiki pages to (can be a brand new install.)")
 
