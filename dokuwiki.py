@@ -98,6 +98,8 @@ class Exporter(object):
             content = wikicontent.convert_pagecontent(full_title, revision["*"])
             timestamp = get_timestamp(revision)
             comment = revision.get("comment", "").replace("\t", " ").split("\n")[0]
+            if is_current:
+                comment += " + move from mediawiki to dokuwiki"
             # path to the .changes metafile
             changespath = os.path.join(metadir, "%s.changes"%pagename)
             # for current revision, create 'pages' .txt
