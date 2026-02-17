@@ -72,7 +72,7 @@ class Importer(object):
         pageid = page['pageid']
         query = { 'prop' : 'revisions',
                   'pageids' : pageid,
-                  'rvprop' : 'timestamp|user|comment|content',
+                  'rvprop' : 'timestamp|user|comment|content|size',
                   'rvlimit' : '50',
                   }
         revisions = self._query(query, [ 'pages', str(pageid), 'revisions' ])

@@ -91,6 +91,7 @@ class Exporter(object):
 
         # Walk through the list of revisions
         revisions = list(reversed(page["revisions"])) # order as oldest first
+        prev_size = 0
         for revision in revisions:
             is_current = (revision == revisions[-1])
             is_first = (revision == revisions[0])
@@ -114,8 +115,9 @@ class Exporter(object):
             # append entry to page's 'changes' metadata index
             with codecs.open(changespath, "w" if is_first else "a", "utf-8") as f:
                 changes_title = full_title.replace("/", ":")
-                fields = (str(timestamp), "::1", "C" if is_first else "E", changes_title, names.clean_user(revision["user"]), comment)
+                fields = (str(timestamp), "::1", "C" if is_first else "E", changes_title, names.clean_user(revision["user"]), comment, '', str(revision["size"] - prev_size))
                 print(u"\t".join(fields), file=f)
+            prev_size = revision["size"]
 
 
     def _aggregate_changes(self, metadir, aggregate):
