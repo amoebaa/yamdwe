@@ -136,6 +136,9 @@ def get_object_if_title_on_list(wanted_titles: list[str], query_additions: dict[
 		for item in result[query_additions['list']]:
 			if item['title'] in wanted_titles:
 				wanted_items.append(item)
+			if ' ' in item['title']: 
+				if item['title'].replace(' ', '_') in wanted_titles:
+					wanted_items.append(item)
 	return wanted_items
 
 # Get json data on pages, ready for yamdwe to use.  Also goes through categories.
@@ -153,6 +156,9 @@ def create_partial_pages_list_for_yamdwe(args: helper_args):
 			args.mode_name = orig_mode + ':' + category_name
 			wanted_items.extend(get_object_if_title_on_list(wanted_titles, query_additions, args))
 		args.mode_name = orig_mode
+	# Make sure we get unique ones
+	unique_wanted_items = list( { item['pageid']: item for item in wanted_items }.values() )
+	wanted_items = sorted(unique_wanted_items, key=lambda item: item['title'])
 	title_counts: collections.Counter = collections.Counter([ i['title'] for i in wanted_items ])
 	multiples: list[str] = []
 	for title, amount in title_counts.most_common():
@@ -161,6 +167,7 @@ def create_partial_pages_list_for_yamdwe(args: helper_args):
 		multiples.append(f"{title} : {amount}")
 	if multiples:
 		print("Found multiples of following titles:\n" + ", ".join(multiples))
+	print(f"Wanted titles: {len(wanted_titles)}, got items {len(wanted_items)}")
 	save_to_file(json.dumps(wanted_items, indent='\t'), args.limited_pages_savefilename, args)
 
 # Get json data on images, ready for yamdwe to use.
@@ -168,6 +175,7 @@ def create_partial_images_list_for_yamdwe(args: helper_args):
 	wanted_titles: list[str] = read_clean_list(args.limited_images_list_filename, args)
 	query_additions: dict[str, str] = { 'list' : 'allimages', 'ailimit': args.DEFAULT_AMOUNT_FOR_MAX_500 }
 	wanted_items: list = get_object_if_title_on_list(wanted_titles, query_additions, args)
+	print(f"Wanted titles: {len(wanted_titles)}, got items {len(wanted_items)}")
 	save_to_file(json.dumps(wanted_items, indent='\t'), args.limited_images_savefilename, args)
 
 
