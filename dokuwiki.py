@@ -197,8 +197,11 @@ def make_dokuwiki_pagename(mediawiki_name):
     """
     result = mediawiki_name.replace(" ","_")
     # We have pages that have ':' in them - replace with underscores
-    result = result.replace(':', '_')
-    result = names.clean_id(camel_to_underscore(result)).replace("/",":")
+    # Agreed PR #58 at projectgus / yamdwe, lower is better than replacing
+    # CamelCase with '_'.  Also want to keep ':' for namespaces.
+    #result = result.replace(':', '_')
+    #result = names.clean_id(camel_to_underscore(result)).replace("/",":")
+    result = names.clean_id(result.lower()).replace("/",":")
     # Some of our mediawiki page names begin with a '/', which results in os.path.join assuming the page is an absolute path.
     if result[0] == ':':
       result = result.lstrip(':')
