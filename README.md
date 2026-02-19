@@ -7,6 +7,8 @@ Mediawiki install to a Dokuwiki install.
 
 **yamde needs a new maintainer** - I've gotten busy with other responsibilities and I'm not giving yamdwe the attention it deserves. It's mostly mature software, the only issue is occasionally content in some wikis that doesn't convert properly. Yamdwe has automated tests and continuous integration so it's not too painful to add bugfixes, the usual slow point is investigating behaviour of mediawiki installs that aren't publically available. If you're interested in helping out then please get in touch, or just browse the [Issues](https://github.com/projectgus/yamdwe/issues) list and maybe send some PRs! Any active maintainer will be gladly credited and/or I'll transfer the repo to you if you'd like that. *-- Angus*
 
+This is a hacked-together version that was able to convert part of a Mediawiki to a Dokuwiki in 2026-02 with Python 3.11.  More details in [my notes](extras/media2dokuwiki_notes.txt). *-- Amoeba*
+
 # Features
 
 * Exports and recreates full revision history of all pages, including author information for correct attribution.

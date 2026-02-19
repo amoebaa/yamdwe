@@ -6,11 +6,15 @@ Notes:
 ** When listing page titles to search for, need to use names with spaces rather than underscores
 ** Going through all pages does not list pages if they are within a class.
 * Added query_delay parameter to give the mediawiki server a breather
+* mwlib apparently does not handle wikis in other languages...
+** Thus ImageLinks and CategoryLinks turned into ArticleLinks
+* If you have multiple pages with the same title, use
+  site_url/mediawiki/index.php?title=Foo&curid=1234  to differentiate.
 
-URLs: https://github.com/projectgus/yamdwe/
-https://github.com/iliana/python-simplemediawiki
-https://www.mediawiki.org/w/api.php?action=help&modules=query
-https://www.mediawiki.org/wiki/API:Continue#Example_3:_Python_code_for_iterating_through_all_results
+URLs:
+Original: https://github.com/projectgus/yamdwe/
+Better simplemediawiki: https://github.com/iliana/python-simplemediawiki
+Mediawiki examples: https://www.mediawiki.org/w/api.php?action=help&modules=query
 
 Pip installs:
 mwlib
@@ -20,3 +24,11 @@ six
 py
 pypdf
 pyparsing
+
+General info:
+This code was used to transfer part of an old Finnish mediawiki install to a dokuwiki elsewhere in 2026-02.  If you want to use it, good luck and hopefully you understand Python so you can make the modifications you need.  
+I've tried to make the commits easily separable, but if you're going to try to use this code, branching off from the commit where this text was added is probably a good idea.  Everything after this is going to be more to either handle personal preferences or the quirks of the original mediawiki, so it may not be as generally usable.
+The original mediawiki had a few extra categories, but they were not well maintained, so page titles had some complications.  There were also other problems such as orphaned redirects from renaming back and forth.
+The stuff in the extras directory was mostly used to search for different pages & images which might be included in the transfer, and then writing those in the same format that yamdwe would get them from the mediawiki with all_pages or all_images.
+The pmw2dw.py (partial mediawiki to dokuwiki) file in the main directory was used to add extra functionality for a cleaner transfer.  Note especially that the dokuwiki had the exttab plugin so that tables could be kept in their more complicated form.  (Some editing by hand will still be necessary, and the typography / wrap plugin might be useful for prettier output.)
+
