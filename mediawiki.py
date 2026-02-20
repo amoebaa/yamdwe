@@ -10,6 +10,7 @@ Licensed under New BSD License as described in the file LICENSE.
 import simplemediawiki
 import re
 import time
+import json
 #from pprint import pprint
 
 class Importer(object):
@@ -73,7 +74,7 @@ class Importer(object):
         query = { 'prop' : 'revisions',
                   'pageids' : pageid,
                   'rvprop' : 'timestamp|user|comment|content|size',
-                  'rvlimit' : '50',
+                  'rvlimit' : '5',
                   }
         revisions = self._query(query, [ 'pages', str(pageid), 'revisions' ])
         return revisions
@@ -110,7 +111,7 @@ class Importer(object):
                 time.sleep(self.delay)
             try:
                 response = self.mw.call(query)
-            except json.scanner.JSONDecodeError as e:
+            except json.JSONDecodeError as e:
                 if e.pos == 0:
                     if not self.verbose:
                       raise RuntimeError("Mediawiki gave us back a non-JSON response. You may need to double-check the Mediawiki API URL you are providing (it usually ends in api.php), and also your Mediawiki permissions. To see the response content, pass the --verbose flag to yamdwe.")

@@ -95,7 +95,11 @@ class Exporter(object):
         for revision in revisions:
             is_current = (revision == revisions[-1])
             is_first = (revision == revisions[0])
-            content = wikicontent.convert_pagecontent(full_title, revision["*"])
+            content = revision["*"]
+            if content:  # mwlib uparser throws error if no content
+                content = wikicontent.convert_pagecontent(full_title, content)
+            else:
+                print(f"{page['title']} had no content, skipping!")
             timestamp = get_timestamp(revision)
             comment = revision.get("comment", "").replace("\t", " ").split("\n")[0]
             if is_current:
