@@ -12,6 +12,7 @@ from requests.auth import HTTPBasicAuth
 import wikicontent
 import simplemediawiki
 import names
+from pmw2dw import pmw2dw_args, pmw2dw_converter
 
 class Exporter(object):
     def __init__(self, rootpath):
@@ -32,6 +33,7 @@ class Exporter(object):
         self.pages = os.path.join(self.data, "pages")
         for subdir in [ self.meta, self.attic, self.pages]:
             ensure_directory_exists(subdir)
+        self.pmw2dw_conv = pmw2dw_converter(pmw2dw_args)
 
     def write_pages(self, pages):
         """
@@ -95,12 +97,13 @@ class Exporter(object):
         for revision in revisions:
             is_current = (revision == revisions[-1])
             is_first = (revision == revisions[0])
-            content = revision["*"]
+            timestamp = get_timestamp(revision)
+            content = self.pmw2dw_conv.pre_process(revision["*"], page['title'] + "/" + str(timestamp))
             if content:  # mwlib uparser throws error if no content
                 content = wikicontent.convert_pagecontent(full_title, content)
             else:
                 print(f"{page['title']} had no content, skipping!")
-            timestamp = get_timestamp(revision)
+            content = self.pmw2dw_conv.post_process(content)
             comment = revision.get("comment", "").replace("\t", " ").split("\n")[0]
             if is_current:
                 comment += " + move from mediawiki to dokuwiki"

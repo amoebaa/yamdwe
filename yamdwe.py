@@ -49,6 +49,7 @@ def main():
 
     # Set the wikicontent's definition of File: and Image: prefixes (varies by language settings)
     canonical_file, aliases = importer.get_file_namespaces()
+    canonical_file = "File"  # Hard-coding this
     wikicontent.set_file_namespaces(canonical_file, aliases)
 
     # Read all (wanted) pages and page revisions
