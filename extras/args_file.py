@@ -25,7 +25,8 @@ class helper_args():
 	files_dir: str = 'test'  # All filenames below will be in this directory
 	endpoint_url = 'http://xcalibur.cc.tut.fi/mediawiki/api.php'
 	run_mode: run_options = run_options.get_pages_for_yamdwe
-	#run_mode: run_options = run_options.merge_files
+	#run_mode: run_options = run_options.subtract_files
+	special_add_to_query: dict[str, str] = {} # { 'apnamespace': 102 }  # Add to special case queries
 	# For getting all edits of a user
 	all_edits_user: str = 'Amoeba'
 	all_user_edits_savefilename: str = all_edits_user + '_edits.txt'
@@ -44,8 +45,8 @@ class helper_args():
 	# NOTE! getting pages will also attempt to use categories_filename from above!
 	#limited_pages_list_filename: str = 'save9_pages.txt'
 	#limited_pages_savefilename: str = 'all_wanted_pages.json'  # This will be in json format
-	limited_pages_list_filename: str = 'save9_pages_test.txt'
-	limited_pages_savefilename: str = 'all_wanted_pages_test.json'  # This will be in json format
+	limited_pages_list_filename: str = 'save7_missed_pages.txt'
+	limited_pages_savefilename: str = 'missed_pages.json'  # This will be in json format
 	limited_images_list_filename: str = 'save8_images.txt'
 	limited_images_savefilename: str = 'all_wanted_images.json'  # This will be in json format
 	# For merging titles

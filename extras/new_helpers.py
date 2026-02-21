@@ -19,6 +19,7 @@ def request_with_continue(request: dict[str, str], args: helper_args):
 		print(f"This is request {args.mode_name}/{counter}")
 		# Don't modify original request, just in case...
 		req: dict[str, str] = request.copy()
+		req.update(args.special_add_to_query)
 		# but add possible continue values from previous request
 		req.update(prev_continue)
 		# Call API
