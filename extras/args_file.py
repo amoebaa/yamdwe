@@ -7,6 +7,7 @@ class run_options(enum.Enum):
 	get_titles_by_partial = enum.auto()
 	get_all_in_categories = enum.auto()
 	get_info_from_pages = enum.auto()
+	get_comments_from_pages = enum.auto()
 	get_pages_for_yamdwe = enum.auto()
 	get_images_for_yamdwe = enum.auto()
 	merge_files = enum.auto()
@@ -24,7 +25,7 @@ class helper_args():
 	# General for all helpers
 	files_dir: str = 'test'  # All filenames below will be in this directory
 	endpoint_url = 'http://xcalibur.cc.tut.fi/mediawiki/api.php'
-	run_mode: run_options = run_options.get_pages_for_yamdwe
+	run_mode: run_options = run_options.get_comments_from_pages
 	#run_mode: run_options = run_options.subtract_files
 	special_add_to_query: dict[str, str] = {} # { 'apnamespace': 102 }  # Add to special case queries
 	# For getting all edits of a user
@@ -40,6 +41,9 @@ class helper_args():
 	page_props_titles_filename: str = 'save4_misc.txt'
 	page_props_savefilebasename: str = 'save4_with_prop' # ".txt" will be added to end
 	page_props: list[str] = ['images', 'links', 'linkshere']
+	# For getting some properties from a list of pages
+	comments_titles_filename: str = 'save9_pages.txt'
+	comments_savefilename: str = 'comments_from_pages.json'
 	# These two are for getting the final lists of objects that
 	# yamdwe would otherwise call for using allpages or allimages
 	# NOTE! getting pages will also attempt to use categories_filename from above!

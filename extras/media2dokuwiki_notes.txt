@@ -9,6 +9,7 @@ Notes:
 * Added query_delay parameter to give the mediawiki server a breather
 * mwlib apparently does not handle wikis in other languages, nor does the parser handle empty content well.
 ** Language issue caused ImageLinks and CategoryLinks to turn into ArticleLinks
+** Also removes all html comments, so if you want to keep those, need to copy the medaiwiki table mechanism for those.
 * If you find multiple pages with the same title, use
   site_url/mediawiki/index.php?title=Foo&curid=1234  to differentiate.
 
